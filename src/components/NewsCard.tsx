@@ -51,7 +51,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({
 
     return (
         <motion.div
-            className="absolute w-full max-w-sm aspect-[3/4] rounded-3xl border border-[var(--color-card-border)] shadow-xl flex flex-col justify-end p-6 overflow-hidden cursor-grab active:cursor-grabbing will-change-transform"
+            className="absolute w-full max-w-sm aspect-[3/4] rounded-3xl border border-[var(--color-card-border)] shadow-xl flex flex-col p-6 overflow-hidden cursor-grab active:cursor-grabbing will-change-transform"
             style={{
                 x,
                 opacity,
@@ -79,26 +79,30 @@ export const NewsCard: React.FC<NewsCardProps> = ({
             )}
 
             {/* Content Area */}
-            <div className="z-10 flex flex-col gap-4">
-                <h2 className="text-2xl font-bold leading-tight line-clamp-3">
-                    {article.headline}
-                </h2>
-                <p className="text-[var(--color-secondary-text)] line-clamp-2 text-sm">
-                    {article.summary}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-2">
-                    {article.tags.map(tag => (
-                        <span key={tag} className="text-xs font-semibold px-2 py-1 bg-white/50 rounded-full text-[var(--color-primary-text)] border border-white/40">
-                            {tag}
-                        </span>
-                    ))}
+            <div className="z-10 flex flex-col h-full pt-10">
+                <div className="flex-1 flex flex-col justify-center">
+                    <h2 className="text-3xl font-extrabold leading-tight line-clamp-4 mb-4 text-[var(--color-primary-text)]">
+                        {article.headline}
+                    </h2>
+                    <p className="text-[var(--color-primary-text)] font-medium line-clamp-3 text-base opacity-90">
+                        {article.summary}
+                    </p>
                 </div>
 
-                {/* Source */}
-                <div className="text-xs text-gray-500 mt-2 font-medium">
-                    Source: {article.source}
+                <div className="mt-auto pt-4 flex flex-col gap-3 border-t border-black/10">
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                        {article.tags.map(tag => (
+                            <span key={tag} className="text-xs font-bold px-3 py-1 bg-white/60 rounded-full text-[var(--color-primary-text)] shadow-sm">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+
+                    {/* Source */}
+                    <div className="text-xs text-[var(--color-secondary-text)] font-bold uppercase tracking-wider">
+                        {article.source}
+                    </div>
                 </div>
             </div>
 

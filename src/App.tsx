@@ -16,7 +16,7 @@ function NewsFeedApp() {
           <div className="w-8 h-8 rounded-xl bg-[var(--color-accent)] flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
             <Zap size={18} fill="currentColor" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">FinFlash</h1>
+          <h1 className="text-xl font-bold tracking-tight">newsfeed</h1>
         </div>
         <button
           onClick={() => setIsSettingsOpen(true)}
