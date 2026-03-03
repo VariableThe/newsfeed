@@ -81,26 +81,26 @@ export const NewsCard: React.FC<NewsCardProps> = ({
             {/* Content Area */}
             <div className="z-10 flex flex-col h-full pt-10">
                 <div className="flex-1 flex flex-col justify-center">
-                    <h2 className="text-3xl font-extrabold leading-tight line-clamp-4 mb-4 text-[var(--color-primary-text)]">
+                    <h2 className="text-3xl font-extrabold leading-tight line-clamp-4 mb-4 text-white">
                         {article.headline}
                     </h2>
-                    <p className="text-[var(--color-primary-text)] font-medium line-clamp-3 text-base opacity-90">
+                    <p className="text-white/90 font-medium line-clamp-3 text-base">
                         {article.summary}
                     </p>
                 </div>
 
-                <div className="mt-auto pt-4 flex flex-col gap-3 border-t border-black/10">
+                <div className="mt-auto pt-4 flex flex-col gap-3 border-t border-white/20">
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2">
                         {article.tags.map(tag => (
-                            <span key={tag} className="text-xs font-bold px-3 py-1 bg-white/60 rounded-full text-[var(--color-primary-text)] shadow-sm">
+                            <span key={tag} className="text-xs font-bold px-3 py-1 bg-black/20 backdrop-blur-sm rounded-full text-white shadow-sm">
                                 {tag}
                             </span>
                         ))}
                     </div>
 
                     {/* Source */}
-                    <div className="text-xs text-[var(--color-secondary-text)] font-bold uppercase tracking-wider">
+                    <div className="text-xs text-white/70 font-bold uppercase tracking-wider">
                         {article.source}
                     </div>
                 </div>

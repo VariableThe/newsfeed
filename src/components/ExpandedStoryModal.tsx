@@ -26,42 +26,42 @@ export const ExpandedStoryModal: React.FC<ExpandedStoryModalProps> = ({ article,
                 style={{ backgroundColor: article.themeColor || 'var(--color-card-dark)' }}
                 onClick={e => e.stopPropagation()}
             >
-                <div className="flex items-center justify-between p-4 border-b border-[var(--color-card-border)]">
-                    <div className="text-sm font-semibold text-[var(--color-secondary-text)]">
+                <div className="flex items-center justify-between p-4 border-b border-white/20">
+                    <div className="text-sm font-semibold text-white/70">
                         {article.source}
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-full hover:bg-[var(--color-card-border)] transition-colors text-[var(--color-primary-text)] bg-transparent"
+                        className="p-2 rounded-full hover:bg-white/10 transition-colors text-white bg-transparent"
                     >
                         <X size={20} />
                     </button>
                 </div>
 
-                <div className="p-6 overflow-y-auto flex-1 overscroll-contain">
-                    <h2 className="text-2xl font-bold leading-tight mb-4">
+                <div className="p-6 overflow-y-auto flex-1 overscroll-contain text-white">
+                    <h2 className="text-2xl font-bold leading-tight mb-4 text-white">
                         {article.headline}
                     </h2>
 
                     <div className="flex flex-wrap gap-2 mb-6">
                         {article.tags.map(tag => (
-                            <span key={tag} className="text-xs font-semibold px-2 py-1 bg-white/50 rounded-full text-[var(--color-primary-text)] border border-white/40">
+                            <span key={tag} className="text-xs font-semibold px-2 py-1 bg-black/20 backdrop-blur-sm shadow-sm rounded-full text-white">
                                 {tag}
                             </span>
                         ))}
                     </div>
 
                     <div className="prose max-w-none">
-                        <p className="text-[var(--color-primary-text)] font-medium leading-relaxed text-lg mb-4">
+                        <p className="text-white/95 font-medium leading-relaxed text-lg mb-4">
                             {article.summary}
                         </p>
-                        <p className="text-[var(--color-secondary-text)] leading-relaxed">
+                        <p className="text-white/80 leading-relaxed">
                             {article.fullStory}
                         </p>
                     </div>
                 </div>
 
-                <div className="p-4 border-t border-[var(--color-card-border)] bg-white/30 backdrop-blur-md">
+                <div className="p-4 border-t border-white/20 bg-black/10 backdrop-blur-md">
                     <a
                         href={article.sourceUrl}
                         target="_blank"

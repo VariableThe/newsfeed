@@ -20,9 +20,9 @@ const FEEDS = [
     { url: "https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml", category: "Sports" }
 ];
 
-const PASTEL_COLORS = [
-    '#FFB3BA', '#FFDFBA', '#FFFFBA', '#Baffc9', '#BAE1FF',
-    '#E6B3FF', '#FFE1E8', '#C4FAF8', '#F5E6CC', '#E8DFF5'
+const BOLD_COLORS = [
+    '#E63946', '#F4A261', '#2A9D8F', '#264653', '#8338EC',
+    '#3A86FF', '#FF006E', '#118AB2', '#073B4C', '#D90429'
 ];
 
 export async function fetchRSSFeeds(onChunkLoaded?: (articles: NewsArticle[]) => void): Promise<NewsArticle[]> {
@@ -71,7 +71,7 @@ export async function fetchRSSFeeds(onChunkLoaded?: (articles: NewsArticle[]) =>
                     timestamp: new Date(pubDate).toISOString(),
                     tags: tagsList,
                     importance: importanceValue,
-                    themeColor: PASTEL_COLORS[Math.floor(Math.random() * PASTEL_COLORS.length)]
+                    themeColor: BOLD_COLORS[Math.floor(Math.random() * BOLD_COLORS.length)]
                 });
             });
 
