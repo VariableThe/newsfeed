@@ -77,16 +77,8 @@ export async function fetchRSSFeeds(onChunkLoaded?: (articles: NewsArticle[]) =>
 
             // If a callback is provided, emit this chunk instantly
             if (onChunkLoaded && feedArticles.length > 0) {
-                // Keep chunk sorted by importance and timestamp
-                onChunkLoaded(
-                    feedArticles.sort((a, b) => {
-                        const weight = { breaking: 3, high: 2, normal: 1 };
-                        const weightA = weight[a.importance] || 1;
-                        const weightB = weight[b.importance] || 1;
-                        if (weightA !== weightB) return weightB - weightA;
-                        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-                    })
-                );
+                // Shuffle the individual chunk slightly
+                onChunkLoaded(feedArticles.sort(() => Math.random() - 0.5));
             }
 
             allArticles.push(...feedArticles);
@@ -98,12 +90,5 @@ export async function fetchRSSFeeds(onChunkLoaded?: (articles: NewsArticle[]) =>
     // Wait for all fetches to complete
     await Promise.allSettled(feedPromises);
 
-    // Sort primarily by importance, then by timestamp descending
-    return allArticles.sort((a, b) => {
-        const weight = { breaking: 3, high: 2, normal: 1 };
-        const weightA = weight[a.importance] || 1;
-        const weightB = weight[b.importance] || 1;
-        if (weightA !== weightB) return weightB - weightA;
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-    });
+    return allArticles.sort(() => Math.random() - 0.5);
 }

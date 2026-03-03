@@ -99,10 +99,9 @@ export const NewsCard: React.FC<NewsCardProps> = ({
                         ))}
                     </div>
 
-                    {/* Source & Timestamp */}
-                    <div className="flex justify-between items-center text-xs text-white/70 font-bold uppercase tracking-wider w-full">
-                        <span>{article.source}</span>
-                        <span className="text-right text-white/50">{new Date(article.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })}</span>
+                    {/* Source */}
+                    <div className="text-xs text-white/70 font-bold uppercase tracking-wider">
+                        {article.source}
                     </div>
                 </div>
             </div>
