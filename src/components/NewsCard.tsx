@@ -99,9 +99,20 @@ export const NewsCard: React.FC<NewsCardProps> = ({
                         ))}
                     </div>
 
-                    {/* Source */}
-                    <div className="text-xs text-white/70 font-bold uppercase tracking-wider">
-                        {article.source}
+                    {/* Source and Timestamp */}
+                    <div className="flex justify-between items-end">
+                        <div className="text-xs text-white/70 font-bold uppercase tracking-wider">
+                            {article.source}
+                        </div>
+                        <div className="text-xs text-white/60 font-medium">
+                            {new Intl.DateTimeFormat('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                hour12: true
+                            }).format(new Date(article.timestamp))}
+                        </div>
                     </div>
                 </div>
             </div>
