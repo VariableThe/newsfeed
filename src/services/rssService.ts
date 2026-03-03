@@ -51,6 +51,13 @@ export async function fetchRSSFeeds(onChunkLoaded?: (articles: NewsArticle[]) =>
 
                 if (!title || !link) return;
 
+                const isBreaking = Math.random() > 0.95;
+                const importanceValue = isBreaking ? 'breaking' : (Math.random() > 0.85 ? 'high' : 'normal');
+
+                const tagsList = [`#${feed.category}`, `#${feed.url.includes('bbc') ? 'BBC' : feed.url.includes('nytimes') ? 'NYT' : 'ET'}`];
+                if (feed.category === 'Markets' || feed.category === 'Wealth') tagsList.push('#Finance');
+                if (isBreaking) tagsList.push('#Breaking');
+
                 feedArticles.push({
                     id: `${feed.category}-${index}-${Math.random().toString(36).substr(2, 9)}`,
                     headline: title,
@@ -62,8 +69,8 @@ export async function fetchRSSFeeds(onChunkLoaded?: (articles: NewsArticle[]) =>
                                 : feed.url.includes('aljazeera') ? "Al Jazeera" : "World News",
                     sourceUrl: link,
                     timestamp: new Date(pubDate).toISOString(),
-                    tags: [`#${feed.category}`, `#${feed.url.includes('bbc') ? 'BBC' : feed.url.includes('nytimes') ? 'NYT' : 'ET'}`],
-                    importance: Math.random() > 0.95 ? 'breaking' : (Math.random() > 0.85 ? 'high' : 'normal'),
+                    tags: tagsList,
+                    importance: importanceValue,
                     themeColor: PASTEL_COLORS[Math.floor(Math.random() * PASTEL_COLORS.length)]
                 });
             });

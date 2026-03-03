@@ -26,7 +26,7 @@ export function NewsProvider({ children }: { children: ReactNode }) {
     const [deck, setDeck] = useState<NewsArticle[]>([]);
     const [history, setHistory] = useState<NewsArticle[]>([]);
     const [allFetchedNews, setAllFetchedNews] = useState<NewsArticle[]>([]);
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>(['#Finance', '#World', '#Breaking']);
     const [allTags, setAllTags] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [notificationsEnabled, setNotificationsEnabled] = useState(false); // Disabled by default
@@ -43,7 +43,9 @@ export function NewsProvider({ children }: { children: ReactNode }) {
                 const newTags = Array.from(new Set(chunk.flatMap(a => a.tags)));
 
                 setAllTags(prev => Array.from(new Set([...prev, ...newTags])).sort());
-                setSelectedTags(prev => Array.from(new Set([...prev, ...newTags])).sort());
+                // We purposefully do NOT auto-append new tags to selectedTags 
+                // so that non-priority tags remain unchecked by default.
+
                 setAllFetchedNews(prev => {
                     // Prevent duplicate IDs if chunks somehow overlap
                     const existingIds = new Set(prev.map(a => a.id));
@@ -64,7 +66,7 @@ export function NewsProvider({ children }: { children: ReactNode }) {
 
                 setAllFetchedNews(items);
                 setAllTags(newTags);
-                setSelectedTags(newTags);
+                // Also preserving the initial prioritized selected tags if fallback hits
             }
             setIsLoading(false);
         };
