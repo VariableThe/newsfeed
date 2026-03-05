@@ -41,6 +41,7 @@ export const CardDeck: React.FC = () => {
                                         isFront={isFront}
                                         onSwipeLeft={swipedLeft}
                                         onSwipeRight={swipedRight}
+                                        onSwipeUp={swipedLeft}
                                         onClick={(a) => setExpandedArticle(a)}
                                     />
                                 );

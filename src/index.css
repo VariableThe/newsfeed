@@ -12,10 +12,21 @@
   --color-secondary-text: #4B5563;
   /* Medium gray for secondary */
   --color-accent: #8B5CF6;
+
   /* Soft purple accent */
 }
 
 @layer base {
+  .dark {
+    --color-background-dark: #1A1A1A;
+    /* Grayish-black */
+    --color-card-dark: #242424;
+    --color-card-border: rgba(255, 255, 255, 0.1);
+    --color-primary-text: #F3F4F6;
+    --color-secondary-text: #9CA3AF;
+    --color-accent: #A78BFA;
+  }
+
   * {
     box-sizing: border-box;
   }

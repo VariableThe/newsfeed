@@ -10,7 +10,8 @@ export const mockNews: NewsArticle[] = [
         source: "The Economic Times",
         sourceUrl: "https://economictimes.indiatimes.com",
         timestamp: new Date().toISOString(),
-        importance: "breaking"
+        importance: "breaking",
+        themeColor: "#FFA69E"
     },
     {
         id: "2",
@@ -21,7 +22,8 @@ export const mockNews: NewsArticle[] = [
         source: "Mint",
         sourceUrl: "https://livemint.com",
         timestamp: new Date(Date.now() - 3600000).toISOString(),
-        importance: "normal"
+        importance: "normal",
+        themeColor: "#8DC6FF"
     },
     {
         id: "3",
@@ -32,7 +34,8 @@ export const mockNews: NewsArticle[] = [
         source: "TechCrunch",
         sourceUrl: "https://techcrunch.com",
         timestamp: new Date(Date.now() - 7200000).toISOString(),
-        importance: "high"
+        importance: "high",
+        themeColor: "#8DF0C5"
     },
     {
         id: "4",
@@ -43,7 +46,8 @@ export const mockNews: NewsArticle[] = [
         source: "CNBC",
         sourceUrl: "https://cnbc.com",
         timestamp: new Date(Date.now() - 86400000).toISOString(),
-        importance: "normal"
+        importance: "normal",
+        themeColor: "#B5A6FF"
     },
     {
         id: "5",
@@ -54,7 +58,8 @@ export const mockNews: NewsArticle[] = [
         source: "Bloomberg",
         sourceUrl: "https://bloomberg.com",
         timestamp: new Date(Date.now() - 172800000).toISOString(),
-        importance: "normal"
+        importance: "normal",
+        themeColor: "#FFD166"
     }
 ];
 

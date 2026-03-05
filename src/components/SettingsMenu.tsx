@@ -16,7 +16,9 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose }) =
         notificationsEnabled,
         toggleNotifications,
         importanceThreshold,
-        setImportanceThreshold
+        setImportanceThreshold,
+        isDarkMode,
+        toggleDarkMode
     } = useNews();
 
     return (
@@ -65,14 +67,39 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose }) =
                                                 key={tag}
                                                 onClick={() => toggleTag(tag)}
                                                 className={`px-3 py-1.5 rounded-full text-sm font-semibold border transition-colors flex items-center ${isSelected
-                                                        ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-md'
-                                                        : 'bg-white/50 border-white/40 text-[var(--color-secondary-text)] hover:bg-white/80'
+                                                    ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-md'
+                                                    : 'bg-white/50 border-white/40 text-[var(--color-secondary-text)] hover:bg-white/80'
                                                     }`}
                                             >
                                                 {tag}
                                             </button>
                                         );
                                     })}
+                                </div>
+                            </section>
+
+                            {/* Appearance */}
+                            <section>
+                                <h3 className="text-sm font-semibold text-[var(--color-secondary-text)] uppercase tracking-wider mb-4 flex items-center">
+                                    <Settings2 size={16} className="mr-2" />
+                                    Appearance
+                                </h3>
+
+                                <div className="flex items-center justify-between p-4 bg-white/50 rounded-xl border border-white/40 mb-4 shadow-sm dark:bg-white/5 dark:border-white/10">
+                                    <div>
+                                        <div className="font-semibold text-[var(--color-primary-text)] mb-1">Dark Mode</div>
+                                        <div className="text-xs text-[var(--color-secondary-text)]">Toggle dark appearance</div>
+                                    </div>
+                                    <button
+                                        onClick={toggleDarkMode}
+                                        className={`w-12 h-6 rounded-full transition-colors relative ${isDarkMode ? 'bg-[var(--color-accent)]' : 'bg-gray-300'}`}
+                                    >
+                                        <motion.div
+                                            className="w-5 h-5 bg-white rounded-full absolute top-0.5"
+                                            animate={{ left: isDarkMode ? '26px' : '2px' }}
+                                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                        />
+                                    </button>
                                 </div>
                             </section>
 

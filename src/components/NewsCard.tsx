@@ -8,6 +8,7 @@ interface NewsCardProps {
     article: NewsArticle;
     onSwipeLeft: (id: string) => void;
     onSwipeRight: (id: string) => void;
+    onSwipeUp: (id: string) => void;
     onClick: (article: NewsArticle) => void;
     isFront: boolean;
     index: number;
@@ -17,13 +18,22 @@ export const NewsCard: React.FC<NewsCardProps> = ({
     article,
     onSwipeLeft,
     onSwipeRight,
+    onSwipeUp,
     onClick,
     isFront,
     index
 }) => {
     const controls = useAnimation();
     const x = useMotionValue(0);
-    const opacity = useTransform(x, [-200, 0, 200], [0.5, 1, 0.5]);
+    const y = useMotionValue(0);
+
+    const opacity = useTransform(() => {
+        const absX = Math.abs(x.get());
+        const upY = y.get() < 0 ? Math.abs(y.get()) : 0;
+        const maxVal = Math.max(absX, upY);
+        return 1 - (maxVal / 400); // Fades down to 0.5 at 200px
+    });
+
     const rotate = useTransform(x, [-200, 200], [-10, 10]);
     const scale = isFront ? 1 : 1 - index * 0.05;
     const yOffset = isFront ? 0 : index * 20;
@@ -35,17 +45,23 @@ export const NewsCard: React.FC<NewsCardProps> = ({
     }, [scale, controls]);
 
     const handleDragEnd = async (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-        const offset = info.offset.x;
-        const velocity = info.velocity.x;
+        const offsetX = info.offset.x;
+        const velocityX = info.velocity.x;
+        const offsetY = info.offset.y;
+        const velocityY = info.velocity.y;
 
-        if (offset > swipeConfidenceThreshold || velocity > 500) {
+        if (offsetX > swipeConfidenceThreshold || velocityX > 500) {
             await controls.start({ x: 500, opacity: 0, transition: { duration: 0.3 } });
             onSwipeRight(article.id);
-        } else if (offset < -swipeConfidenceThreshold || velocity < -500) {
+        } else if (offsetX < -swipeConfidenceThreshold || velocityX < -500) {
             await controls.start({ x: -500, opacity: 0, transition: { duration: 0.3 } });
             onSwipeLeft(article.id);
+        } else if (offsetY < -swipeConfidenceThreshold || velocityY < -500) {
+            // Swipe up
+            await controls.start({ y: -500, opacity: 0, transition: { duration: 0.3 } });
+            onSwipeUp(article.id);
         } else {
-            controls.start({ x: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 20 } });
+            controls.start({ x: 0, y: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 20 } });
         }
     };
 
@@ -54,15 +70,16 @@ export const NewsCard: React.FC<NewsCardProps> = ({
             className="absolute w-full max-w-sm aspect-[3/4] rounded-3xl border border-[var(--color-card-border)] shadow-xl flex flex-col p-6 overflow-hidden cursor-grab active:cursor-grabbing will-change-transform"
             style={{
                 x,
+                y,
                 opacity,
                 rotate,
                 scale,
-                y: yOffset,
+                top: yOffset,
                 zIndex: 50 - index,
                 backgroundColor: article.themeColor || 'var(--color-card-dark)'
             }}
-            drag={isFront ? "x" : false}
-            dragConstraints={{ left: 0, right: 0 }}
+            drag={isFront ? true : false}
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
             dragElastic={0.8}
             onDragEnd={handleDragEnd}
             animate={controls}

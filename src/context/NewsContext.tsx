@@ -18,6 +18,8 @@ interface NewsContextType {
     importanceThreshold: 'normal' | 'high' | 'breaking';
     setImportanceThreshold: (level: 'normal' | 'high' | 'breaking') => void;
     isLoading: boolean;
+    isDarkMode: boolean;
+    toggleDarkMode: () => void;
 }
 
 const NewsContext = createContext<NewsContextType | undefined>(undefined);
@@ -31,6 +33,16 @@ export function NewsProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [notificationsEnabled, setNotificationsEnabled] = useState(false); // Disabled by default
     const [importanceThreshold, setImportanceThreshold] = useState<'normal' | 'high' | 'breaking'>('breaking');
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    // Apply dark mode class to html element
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [isDarkMode]);
 
     // Fetch feeds on mount
     useEffect(() => {
@@ -111,6 +123,10 @@ export function NewsProvider({ children }: { children: ReactNode }) {
         setNotificationsEnabled(prev => !prev);
     }
 
+    const toggleDarkMode = () => {
+        setIsDarkMode(prev => !prev);
+    }
+
     return (
         <NewsContext.Provider value={{
             deck,
@@ -124,7 +140,9 @@ export function NewsProvider({ children }: { children: ReactNode }) {
             toggleNotifications,
             importanceThreshold,
             setImportanceThreshold,
-            isLoading
+            isLoading,
+            isDarkMode,
+            toggleDarkMode
         }}>
             {children}
         </NewsContext.Provider>
