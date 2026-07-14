@@ -9,4 +9,5 @@ export interface NewsArticle {
     timestamp: string;
     importance: 'normal' | 'high' | 'breaking';
     themeColor?: string;
+    imageUrl?: string;
 }

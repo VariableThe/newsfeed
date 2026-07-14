@@ -1,12 +1,37 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Settings2, Bell, Check } from 'lucide-react';
+import { X, Settings2, Bell, Check, Tag, Sun, Moon, BookMarked, RefreshCw, Heart } from 'lucide-react';
 import { useNews } from '../context/NewsContext';
 
 interface SettingsMenuProps {
     isOpen: boolean;
     onClose: () => void;
 }
+
+const TAG_EMOJI: Record<string, string> = {
+    '#Finance': '💰',
+    '#Markets': '📈',
+    '#Tech': '💻',
+    '#World': '🌍',
+    '#Science': '🔬',
+    '#Breaking': '⚡',
+    '#Startup': '🚀',
+    '#Funding': '💵',
+    '#AI': '🤖',
+    '#Health': '❤️',
+    '#Sports': '⚽',
+    '#Entertainment': '🎬',
+    '#Climate': '🌿',
+    '#India': '🇮🇳',
+    '#Space': '🪐',
+    '#FinTech': '🏦',
+    '#Apple': '🍎',
+    '#Earnings': '📊',
+    '#Economy': '🏛️',
+    '#IPO': '🎯',
+};
+
+const getTagEmoji = (tag: string) => TAG_EMOJI[tag] ?? '📰';
 
 export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose }) => {
     const {
@@ -18,143 +43,222 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose }) =
         importanceThreshold,
         setImportanceThreshold,
         isDarkMode,
-        toggleDarkMode
+        toggleDarkMode,
+        history,
+        savedArticles,
+        resetFeed,
     } = useNews();
 
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
+                    {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
                         onClick={onClose}
                     />
+
+                    {/* Drawer */}
                     <motion.div
-                        initial={{ x: "100%" }}
+                        initial={{ x: '100%' }}
                         animate={{ x: 0 }}
-                        exit={{ x: "100%" }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-[var(--color-background-dark)] border-l border-[var(--color-card-border)] z-50 shadow-2xl flex flex-col"
+                        exit={{ x: '100%' }}
+                        transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+                        className="fixed top-0 right-0 bottom-0 w-[88vw] max-w-sm z-50 flex flex-col"
+                        style={{ backgroundColor: 'var(--color-background-dark)' }}
                     >
-                        <div className="flex items-center justify-between p-6 border-b border-[var(--color-card-border)] bg-white/30 backdrop-blur-md">
-                            <h2 className="text-xl font-bold flex items-center text-[var(--color-primary-text)]">
-                                <Settings2 className="mr-3 text-[var(--color-accent)]" />
-                                Settings
-                            </h2>
-                            <button onClick={onClose} className="p-2 text-[var(--color-secondary-text)] hover:text-[var(--color-primary-text)] rounded-full transition-colors bg-white/50 border border-white/40">
-                                <X size={20} />
+                        {/* Header */}
+                        <div className="flex items-center justify-between px-5 pt-12 pb-4 border-b border-[var(--color-card-border)]">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-xl bg-[var(--color-accent)]/15 flex items-center justify-center">
+                                    <Settings2 size={16} className="text-[var(--color-accent)]" />
+                                </div>
+                                <h2 className="text-lg font-bold text-[var(--color-primary-text)]">Settings</h2>
+                            </div>
+                            <button
+                                onClick={onClose}
+                                className="w-8 h-8 rounded-full border border-[var(--color-card-border)] flex items-center justify-center text-[var(--color-secondary-text)] hover:text-[var(--color-primary-text)] transition-colors bg-transparent"
+                            >
+                                <X size={16} />
                             </button>
                         </div>
 
-                        <div className="p-6 overflow-y-auto flex-1 flex flex-col gap-8">
+                        {/* Scrollable body */}
+                        <div className="flex-1 overflow-y-auto overscroll-contain">
 
-                            {/* Content Preferences */}
-                            <section>
-                                <h3 className="text-sm font-semibold text-[var(--color-secondary-text)] uppercase tracking-wider mb-4">
-                                    Content Preferences
-                                </h3>
-                                <p className="text-sm text-[var(--color-secondary-text)] mb-4 leading-relaxed">
-                                    Select the tags you want to see in your feed. Unselected tags will be hidden.
-                                </p>
-                                <div className="flex flex-wrap gap-2">
-                                    {allTags.map(tag => {
-                                        const isSelected = selectedTags.includes(tag);
-                                        return (
-                                            <button
-                                                key={tag}
-                                                onClick={() => toggleTag(tag)}
-                                                className={`px-3 py-1.5 rounded-full text-sm font-semibold border transition-colors flex items-center ${isSelected
-                                                    ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-md'
-                                                    : 'bg-white/50 border-white/40 text-[var(--color-secondary-text)] hover:bg-white/80'
-                                                    }`}
-                                            >
-                                                {tag}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            </section>
-
-                            {/* Appearance */}
-                            <section>
-                                <h3 className="text-sm font-semibold text-[var(--color-secondary-text)] uppercase tracking-wider mb-4 flex items-center">
-                                    <Settings2 size={16} className="mr-2" />
-                                    Appearance
-                                </h3>
-
-                                <div className="flex items-center justify-between p-4 bg-white/50 rounded-xl border border-white/40 mb-4 shadow-sm dark:bg-white/5 dark:border-white/10">
-                                    <div>
-                                        <div className="font-semibold text-[var(--color-primary-text)] mb-1">Dark Mode</div>
-                                        <div className="text-xs text-[var(--color-secondary-text)]">Toggle dark appearance</div>
+                            {/* Stats strip */}
+                            <div className="px-5 py-4 grid grid-cols-2 gap-3 border-b border-[var(--color-card-border)]">
+                                <div className="p-3 rounded-2xl border border-[var(--color-card-border)] bg-[var(--color-card-border)]/50 flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-xl bg-purple-500/15 flex items-center justify-center flex-shrink-0">
+                                        <BookMarked size={14} className="text-purple-400" />
                                     </div>
-                                    <button
-                                        onClick={toggleDarkMode}
-                                        className={`w-12 h-6 rounded-full transition-colors relative ${isDarkMode ? 'bg-[var(--color-accent)]' : 'bg-gray-300'}`}
-                                    >
-                                        <motion.div
-                                            className="w-5 h-5 bg-white rounded-full absolute top-0.5"
-                                            animate={{ left: isDarkMode ? '26px' : '2px' }}
-                                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                        />
-                                    </button>
-                                </div>
-                            </section>
-
-                            {/* Push Notifications */}
-                            <section>
-                                <h3 className="text-sm font-semibold text-[var(--color-secondary-text)] uppercase tracking-wider mb-4 flex items-center">
-                                    <Bell size={16} className="mr-2" />
-                                    Push Notifications
-                                </h3>
-
-                                <div className="flex items-center justify-between p-4 bg-white/50 rounded-xl border border-white/40 mb-4 shadow-sm">
                                     <div>
-                                        <div className="font-semibold text-[var(--color-primary-text)] mb-1">Enable Alerts</div>
-                                        <div className="text-xs text-[var(--color-secondary-text)]">Receive mock push notifications</div>
+                                        <div className="text-lg font-bold text-[var(--color-primary-text)] leading-none">{history.length}</div>
+                                        <div className="text-[10px] text-[var(--color-secondary-text)] font-medium mt-0.5">Articles Read</div>
                                     </div>
-                                    <button
-                                        onClick={toggleNotifications}
-                                        className={`w-12 h-6 rounded-full transition-colors relative ${notificationsEnabled ? 'bg-[var(--color-accent)]' : 'bg-gray-300'}`}
-                                    >
-                                        <motion.div
-                                            className="w-5 h-5 bg-white rounded-full absolute top-0.5"
-                                            animate={{ left: notificationsEnabled ? '26px' : '2px' }}
-                                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                        />
-                                    </button>
                                 </div>
+                                <div className="p-3 rounded-2xl border border-[var(--color-card-border)] bg-[var(--color-card-border)]/50 flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-xl bg-green-500/15 flex items-center justify-center flex-shrink-0">
+                                        <Heart size={14} className="text-green-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-lg font-bold text-[var(--color-primary-text)] leading-none">{savedArticles.length}</div>
+                                        <div className="text-[10px] text-[var(--color-secondary-text)] font-medium mt-0.5">Saved</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                {notificationsEnabled && (
-                                    <div className="space-y-3 p-4 bg-white/30 rounded-xl border border-white/40 shadow-sm">
-                                        <div className="text-sm font-medium mb-2">Importance Threshold</div>
+                            <div className="p-5 flex flex-col gap-6">
 
-                                        {(['normal', 'high', 'breaking'] as const).map(level => (
-                                            <label key={level} className="flex items-center gap-3 cursor-pointer">
-                                                <div className={`w-5 h-5 rounded-full border flex items-center justify-center
-                          ${importanceThreshold === level
-                                                        ? 'border-[var(--color-accent)] bg-[var(--color-accent)]'
-                                                        : 'border-[var(--color-secondary-text)]'}`}
+                                {/* Topic Preferences */}
+                                <section>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <Tag size={14} className="text-[var(--color-accent)]" />
+                                        <h3 className="text-xs font-bold text-[var(--color-secondary-text)] uppercase tracking-widest">Topics</h3>
+                                    </div>
+                                    <p className="text-xs text-[var(--color-secondary-text)] mb-3 leading-relaxed">
+                                        Choose which topics appear in your feed.
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {allTags.map(tag => {
+                                            const isSelected = selectedTags.includes(tag);
+                                            return (
+                                                <button
+                                                    key={tag}
+                                                    onClick={() => toggleTag(tag)}
+                                                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${isSelected
+                                                        ? 'bg-[var(--color-accent)] border-[var(--color-accent)] text-white shadow-md'
+                                                        : 'border-[var(--color-card-border)] text-[var(--color-secondary-text)] hover:border-[var(--color-accent)]/50 hover:text-[var(--color-primary-text)]'
+                                                        }`}
+                                                    style={{ backgroundColor: isSelected ? 'var(--color-accent)' : 'var(--color-card-border)' }}
                                                 >
-                                                    {importanceThreshold === level && <Check size={12} className="text-white" />}
-                                                </div>
-                                                <input
-                                                    type="radio"
-                                                    name="threshold"
-                                                    value={level}
-                                                    checked={importanceThreshold === level}
-                                                    onChange={() => setImportanceThreshold(level)}
-                                                    className="hidden"
-                                                />
-                                                <span className="capitalize text-sm">{level} News and Above</span>
-                                            </label>
-                                        ))}
+                                                    <span>{getTagEmoji(tag)}</span>
+                                                    <span>{tag.replace('#', '')}</span>
+                                                    {isSelected && <Check size={10} className="ml-0.5" />}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
-                                )}
-                            </section>
+                                </section>
 
+                                {/* Appearance */}
+                                <section>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        {isDarkMode ? <Moon size={14} className="text-[var(--color-accent)]" /> : <Sun size={14} className="text-[var(--color-accent)]" />}
+                                        <h3 className="text-xs font-bold text-[var(--color-secondary-text)] uppercase tracking-widest">Appearance</h3>
+                                    </div>
+                                    <div className="flex items-center justify-between p-4 rounded-2xl border border-[var(--color-card-border)]" style={{ backgroundColor: 'var(--color-card-border)' }}>
+                                        <div>
+                                            <div className="font-semibold text-[var(--color-primary-text)] text-sm">Dark Mode</div>
+                                            <div className="text-xs text-[var(--color-secondary-text)] mt-0.5">
+                                                {isDarkMode ? 'Currently dark' : 'Currently light'}
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={toggleDarkMode}
+                                            className={`w-12 h-6 rounded-full transition-all duration-300 relative flex-shrink-0 ${isDarkMode ? 'bg-[var(--color-accent)]' : 'bg-gray-300'}`}
+                                        >
+                                            <motion.div
+                                                className="w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm"
+                                                animate={{ left: isDarkMode ? '26px' : '2px' }}
+                                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                                            />
+                                        </button>
+                                    </div>
+                                </section>
+
+                                {/* Notifications */}
+                                <section>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <Bell size={14} className="text-[var(--color-accent)]" />
+                                        <h3 className="text-xs font-bold text-[var(--color-secondary-text)] uppercase tracking-widest">Notifications</h3>
+                                    </div>
+
+                                    <div className="flex items-center justify-between p-4 rounded-2xl border border-[var(--color-card-border)] mb-3" style={{ backgroundColor: 'var(--color-card-border)' }}>
+                                        <div>
+                                            <div className="font-semibold text-[var(--color-primary-text)] text-sm">Push Alerts</div>
+                                            <div className="text-xs text-[var(--color-secondary-text)] mt-0.5">Simulated breaking news alerts</div>
+                                        </div>
+                                        <button
+                                            onClick={toggleNotifications}
+                                            className={`w-12 h-6 rounded-full transition-all duration-300 relative flex-shrink-0 ${notificationsEnabled ? 'bg-[var(--color-accent)]' : 'bg-gray-300'}`}
+                                        >
+                                            <motion.div
+                                                className="w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm"
+                                                animate={{ left: notificationsEnabled ? '26px' : '2px' }}
+                                                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                                            />
+                                        </button>
+                                    </div>
+
+                                    <AnimatePresence>
+                                        {notificationsEnabled && (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: 'auto' }}
+                                                exit={{ opacity: 0, height: 0 }}
+                                                className="overflow-hidden"
+                                            >
+                                                <div className="p-4 rounded-2xl border border-[var(--color-card-border)] space-y-3" style={{ backgroundColor: 'var(--color-card-border)' }}>
+                                                    <div className="text-xs font-semibold text-[var(--color-secondary-text)] uppercase tracking-wider">Alert Threshold</div>
+                                                    {(['normal', 'high', 'breaking'] as const).map(level => {
+                                                        const config = {
+                                                            normal: { label: 'All news', emoji: '📰', desc: 'Including routine updates' },
+                                                            high: { label: 'High & Breaking', emoji: '📈', desc: 'Trending and breaking only' },
+                                                            breaking: { label: 'Breaking only', emoji: '⚡', desc: 'Only urgent alerts' },
+                                                        };
+                                                        const isActive = importanceThreshold === level;
+                                                        return (
+                                                            <button
+                                                                key={level}
+                                                                onClick={() => setImportanceThreshold(level)}
+                                                                className={`w-full flex items-center gap-3 p-2.5 rounded-xl transition-all text-left ${isActive
+                                                                    ? 'bg-[var(--color-accent)]/15 border border-[var(--color-accent)]/30'
+                                                                    : 'hover:bg-white/5'
+                                                                    }`}
+                                                            >
+                                                                <span className="text-base">{config[level].emoji}</span>
+                                                                <div className="flex-1">
+                                                                    <div className={`text-xs font-semibold ${isActive ? 'text-[var(--color-accent)]' : 'text-[var(--color-primary-text)]'}`}>
+                                                                        {config[level].label}
+                                                                    </div>
+                                                                    <div className="text-[10px] text-[var(--color-secondary-text)]">{config[level].desc}</div>
+                                                                </div>
+                                                                {isActive && (
+                                                                    <div className="w-4 h-4 rounded-full bg-[var(--color-accent)] flex items-center justify-center flex-shrink-0">
+                                                                        <Check size={9} className="text-white" />
+                                                                    </div>
+                                                                )}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </section>
+
+                                {/* Feed Management */}
+                                <section>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <RefreshCw size={14} className="text-[var(--color-accent)]" />
+                                        <h3 className="text-xs font-bold text-[var(--color-secondary-text)] uppercase tracking-widest">Feed</h3>
+                                    </div>
+                                    <button
+                                        onClick={() => { resetFeed(); onClose(); }}
+                                        className="w-full flex items-center gap-3 p-4 rounded-2xl border border-red-500/20 bg-red-500/5 text-red-400 hover:bg-red-500/10 transition-colors text-sm font-semibold"
+                                    >
+                                        <RefreshCw size={15} />
+                                        Reset Feed
+                                        <span className="ml-auto text-xs text-red-400/60 font-normal">Clears read history</span>
+                                    </button>
+                                </section>
+
+                            </div>
                         </div>
                     </motion.div>
                 </>

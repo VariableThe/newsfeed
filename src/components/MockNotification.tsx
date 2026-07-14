@@ -15,12 +15,9 @@ export const MockNotification: React.FC = () => {
             return;
         }
 
-        // Simulate random mock notifications
         const triggerRandomNotification = () => {
-            // Filter candidates based on importance threshold
             const importanceValues = { 'normal': 0, 'high': 1, 'breaking': 2 };
             const currentThresholdValue = importanceValues[importanceThreshold];
-
             const candidates = mockNews.filter(
                 article => importanceValues[article.importance] >= currentThresholdValue
             );
@@ -28,23 +25,13 @@ export const MockNotification: React.FC = () => {
             if (candidates.length > 0) {
                 const randomArticle = candidates[Math.floor(Math.random() * candidates.length)];
                 setActiveNotification(randomArticle);
-
-                // Auto dismiss after 5 seconds
-                setTimeout(() => {
-                    setActiveNotification(null);
-                }, 5000);
+                setTimeout(() => setActiveNotification(null), 5000);
             }
         };
 
-        // Trigger first notification after 5 seconds, then randomly every 20-30 seconds
         const initialTimer = setTimeout(triggerRandomNotification, 5000);
-
-        // In a real app we'd clear this properly, but for prototype it's fine
         const intervalMapper = setInterval(() => {
-            // Randomly trigger mostly breaking/high news randomly
-            if (Math.random() > 0.6) {
-                triggerRandomNotification();
-            }
+            if (Math.random() > 0.6) triggerRandomNotification();
         }, 20000);
 
         return () => {
@@ -57,37 +44,54 @@ export const MockNotification: React.FC = () => {
         <AnimatePresence>
             {activeNotification && (
                 <motion.div
-                    initial={{ y: -100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -100, opacity: 0, scale: 0.9 }}
-                    className="fixed top-4 left-4 right-4 z-50 px-4 flex justify-center pointer-events-none"
+                    initial={{ y: -90, opacity: 0, scale: 0.92 }}
+                    animate={{ y: 0, opacity: 1, scale: 1 }}
+                    exit={{ y: -90, opacity: 0, scale: 0.92 }}
+                    transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                    className="absolute top-3 left-3 right-3 z-[60] pointer-events-none"
                 >
-                    <div className="w-full max-w-sm bg-white/90 backdrop-blur-md border border-white/40 rounded-2xl shadow-xl p-4 pointer-events-auto flex gap-4 items-start text-[var(--color-primary-text)]">
-                        <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center 
-              ${activeNotification.importance === 'breaking' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}`}>
-                            <BellRing size={16} />
+                    <div
+                        className="w-full rounded-2xl shadow-2xl px-4 py-3 pointer-events-auto flex gap-3 items-start border border-white/10"
+                        style={{
+                            background: 'rgba(20, 20, 25, 0.92)',
+                            backdropFilter: 'blur(24px)',
+                            WebkitBackdropFilter: 'blur(24px)',
+                        }}
+                    >
+                        {/* Icon */}
+                        <div className={`mt-0.5 flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center shadow-md
+                            ${activeNotification.importance === 'breaking'
+                                ? 'bg-red-500'
+                                : activeNotification.importance === 'high'
+                                    ? 'bg-orange-400'
+                                    : 'bg-[var(--color-accent)]'}`}
+                        >
+                            <BellRing size={16} className="text-white" />
                         </div>
 
+                        {/* Content */}
                         <div className="flex-1 min-w-0">
-                            <div className="text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
-                                <span className={activeNotification.importance === 'breaking' ? 'text-red-600' : 'text-blue-600'}>
-                                    {activeNotification.importance} Alert
+                            <div className="flex items-center gap-1.5 mb-0.5">
+                                <span className={`text-[10px] font-bold uppercase tracking-wider
+                                    ${activeNotification.importance === 'breaking' ? 'text-red-400'
+                                        : activeNotification.importance === 'high' ? 'text-orange-300'
+                                            : 'text-purple-300'}`}>
+                                    {activeNotification.importance === 'breaking' ? '⚡ Breaking' : '📈 Alert'}
                                 </span>
-                                <span className="text-[var(--color-secondary-text)] font-semibold text-[10px]">Just now</span>
+                                <span className="text-white/30 text-[9px] font-medium">· now</span>
                             </div>
-                            <h4 className="font-bold text-sm leading-snug line-clamp-2 mb-1">
+                            <h4 className="font-semibold text-white text-xs leading-snug line-clamp-2">
                                 {activeNotification.headline}
                             </h4>
-                            <p className="text-xs text-[var(--color-secondary-text)] line-clamp-1 font-medium">
-                                {activeNotification.source}
-                            </p>
+                            <p className="text-white/50 text-[10px] mt-0.5 font-medium">{activeNotification.source}</p>
                         </div>
 
+                        {/* Dismiss button */}
                         <button
                             onClick={() => setActiveNotification(null)}
-                            className="p-1 text-[var(--color-secondary-text)] hover:text-[var(--color-primary-text)] rounded-full bg-white/50 flex-shrink-0"
+                            className="flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-white/20 hover:text-white transition-colors"
                         >
-                            <X size={16} />
+                            <X size={12} />
                         </button>
                     </div>
                 </motion.div>

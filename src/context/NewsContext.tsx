@@ -8,6 +8,7 @@ import { fetchRSSFeeds } from '../services/rssService';
 interface NewsContextType {
     deck: NewsArticle[];
     history: NewsArticle[];
+    savedArticles: NewsArticle[];
     selectedTags: string[];
     swipedLeft: (id: string) => void;
     swipedRight: (id: string) => void;
@@ -20,6 +21,8 @@ interface NewsContextType {
     isLoading: boolean;
     isDarkMode: boolean;
     toggleDarkMode: () => void;
+    totalArticleCount: number;
+    resetFeed: () => void;
 }
 
 const NewsContext = createContext<NewsContextType | undefined>(undefined);
@@ -27,13 +30,15 @@ const NewsContext = createContext<NewsContextType | undefined>(undefined);
 export function NewsProvider({ children }: { children: ReactNode }) {
     const [deck, setDeck] = useState<NewsArticle[]>([]);
     const [history, setHistory] = useState<NewsArticle[]>([]);
+    const [savedArticles, setSavedArticles] = useState<NewsArticle[]>([]);
     const [allFetchedNews, setAllFetchedNews] = useState<NewsArticle[]>([]);
-    const [selectedTags, setSelectedTags] = useState<string[]>(['#Finance', '#World', '#Breaking']);
+    const [selectedTags, setSelectedTags] = useState<string[]>(['#Finance', '#World', '#Breaking', '#Tech', '#Science']);
     const [allTags, setAllTags] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [notificationsEnabled, setNotificationsEnabled] = useState(false); // Disabled by default
+    const [notificationsEnabled, setNotificationsEnabled] = useState(false);
     const [importanceThreshold, setImportanceThreshold] = useState<'normal' | 'high' | 'breaking'>('breaking');
     const [isDarkMode, setIsDarkMode] = useState(true);
+    const [totalArticleCount, setTotalArticleCount] = useState(0);
 
     // Apply dark mode class to html element
     useEffect(() => {
@@ -53,32 +58,27 @@ export function NewsProvider({ children }: { children: ReactNode }) {
                 if (!mounted) return;
 
                 const newTags = Array.from(new Set(chunk.flatMap(a => a.tags)));
-
                 setAllTags(prev => Array.from(new Set([...prev, ...newTags])).sort());
-                // We purposefully do NOT auto-append new tags to selectedTags 
-                // so that non-priority tags remain unchecked by default.
 
                 setAllFetchedNews(prev => {
-                    // Prevent duplicate IDs if chunks somehow overlap
                     const existingIds = new Set(prev.map(a => a.id));
                     const uniqueChunk = chunk.filter(a => !existingIds.has(a.id));
-                    return [...prev, ...uniqueChunk];
+                    const updated = [...prev, ...uniqueChunk];
+                    setTotalArticleCount(updated.length);
+                    return updated;
                 });
 
-                // Immediately stop loading spinner on first chunk
                 setIsLoading(false);
             });
 
             if (!mounted) return;
 
-            // Fallback if absolutely everything failed
             if (rssNews.length === 0) {
                 const items = mockNews;
                 const newTags = Array.from(new Set(items.flatMap(a => a.tags))).sort();
-
                 setAllFetchedNews(items);
                 setAllTags(newTags);
-                // Also preserving the initial prioritized selected tags if fallback hits
+                setTotalArticleCount(items.length);
             }
             setIsLoading(false);
         };
@@ -87,10 +87,10 @@ export function NewsProvider({ children }: { children: ReactNode }) {
         return () => { mounted = false; };
     }, []);
 
-    // Filter deck based on selected tags whenever selected tags change
+    // Filter deck based on selected tags and history
     useEffect(() => {
-        // We only want to show articles that haven't been swiped yet and match the tags
-        const unswiped = allFetchedNews.filter(article => !history.some(h => h.id === article.id));
+        const swipedIds = new Set(history.map(h => h.id));
+        const unswiped = allFetchedNews.filter(article => !swipedIds.has(article.id));
 
         if (selectedTags.length === 0) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -101,17 +101,28 @@ export function NewsProvider({ children }: { children: ReactNode }) {
         }
     }, [selectedTags, history, allFetchedNews]);
 
-    const handleSwipe = (id: string) => {
-        const swipedArticle = deck.find(a => a.id === id);
-        if (swipedArticle) {
-            setHistory(prev => [...prev, swipedArticle]);
-            // Remove from deck immediately
-            setDeck(prevDeck => prevDeck.filter(a => a.id !== id));
+    const handleDismiss = (id: string) => {
+        const article = deck.find(a => a.id === id);
+        if (article) {
+            setHistory(prev => [...prev, article]);
+            setDeck(prev => prev.filter(a => a.id !== id));
         }
     };
 
-    const swipedLeft = (id: string) => handleSwipe(id); // Dismiss
-    const swipedRight = (id: string) => handleSwipe(id); // Save/Like (could have different logic later)
+    const handleSave = (id: string) => {
+        const article = deck.find(a => a.id === id);
+        if (article) {
+            setSavedArticles(prev => {
+                if (prev.some(a => a.id === id)) return prev;
+                return [...prev, article];
+            });
+            setHistory(prev => [...prev, article]);
+            setDeck(prev => prev.filter(a => a.id !== id));
+        }
+    };
+
+    const swipedLeft = (id: string) => handleDismiss(id);
+    const swipedRight = (id: string) => handleSave(id);
 
     const toggleTag = (tag: string) => {
         setSelectedTags(prev =>
@@ -119,18 +130,19 @@ export function NewsProvider({ children }: { children: ReactNode }) {
         );
     };
 
-    const toggleNotifications = () => {
-        setNotificationsEnabled(prev => !prev);
-    }
+    const toggleNotifications = () => setNotificationsEnabled(prev => !prev);
+    const toggleDarkMode = () => setIsDarkMode(prev => !prev);
 
-    const toggleDarkMode = () => {
-        setIsDarkMode(prev => !prev);
-    }
+    const resetFeed = () => {
+        setHistory([]);
+        setSavedArticles([]);
+    };
 
     return (
         <NewsContext.Provider value={{
             deck,
             history,
+            savedArticles,
             selectedTags,
             swipedLeft,
             swipedRight,
@@ -142,7 +154,9 @@ export function NewsProvider({ children }: { children: ReactNode }) {
             setImportanceThreshold,
             isLoading,
             isDarkMode,
-            toggleDarkMode
+            toggleDarkMode,
+            totalArticleCount,
+            resetFeed,
         }}>
             {children}
         </NewsContext.Provider>
