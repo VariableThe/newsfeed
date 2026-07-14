@@ -38,6 +38,8 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose }) =
         allTags,
         selectedTags,
         toggleTag,
+        selectAllTags,
+        deselectAllTags,
         notificationsEnabled,
         toggleNotifications,
         importanceThreshold,
@@ -116,9 +118,26 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose }) =
 
                                 {/* Topic Preferences */}
                                 <section>
-                                    <div className="flex items-center gap-2 mb-3">
-                                        <Tag size={14} className="text-[var(--color-accent)]" />
-                                        <h3 className="text-xs font-bold text-[var(--color-secondary-text)] uppercase tracking-widest">Topics</h3>
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center gap-2">
+                                            <Tag size={14} className="text-[var(--color-accent)]" />
+                                            <h3 className="text-xs font-bold text-[var(--color-secondary-text)] uppercase tracking-widest">Topics</h3>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={selectAllTags}
+                                                className="text-[11px] font-semibold text-[var(--color-accent)] hover:underline"
+                                            >
+                                                Select All
+                                            </button>
+                                            <span className="text-white/20">|</span>
+                                            <button
+                                                onClick={deselectAllTags}
+                                                className="text-[11px] font-semibold text-[var(--color-secondary-text)] hover:text-[var(--color-primary-text)] hover:underline"
+                                            >
+                                                Clear
+                                            </button>
+                                        </div>
                                     </div>
                                     <p className="text-xs text-[var(--color-secondary-text)] mb-3 leading-relaxed">
                                         Choose which topics appear in your feed.
