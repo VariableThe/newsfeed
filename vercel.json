@@ -1,0 +1,22 @@
+{
+  "$schema": "https://vercel.com/storage/schema/vercel-jsonSchema-1-0-0.json",
+  "rewrites": [
+    { "source": "/feeds/bbc-world", "destination": "https://feeds.bbci.co.uk/news/world/rss.xml" },
+    { "source": "/feeds/bbc-business", "destination": "https://feeds.bbci.co.uk/news/business/rss.xml" },
+    { "source": "/feeds/bbc-science", "destination": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml" },
+    { "source": "/feeds/nyt-world", "destination": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml" },
+    { "source": "/feeds/nyt-technology", "destination": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" },
+    { "source": "/feeds/nyt-health", "destination": "https://rss.nytimes.com/services/xml/rss/nyt/Health.xml" },
+    { "source": "/feeds/nyt-sports", "destination": "https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml" },
+    { "source": "/feeds/et-markets", "destination": "https://economictimes.indiatimes.com/markets/rssfeeds/19770215.cms" },
+    { "source": "/feeds/et-tech", "destination": "https://economictimes.indiatimes.com/tech/rssfeeds/13357270.cms" }
+  ],
+  "headers": [
+    {
+      "source": "/feeds/:path*",
+      "headers": [
+        { "key": "CDN-Cache-Control", "value": "public, max-age=300, stale-while-revalidate=600" }
+      ]
+    }
+  ]
+}
