@@ -14,6 +14,9 @@ dist-ssr
 .vercel
 coverage/
 
+# Test artifacts (Playwright traces, reports)
+test-results/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
