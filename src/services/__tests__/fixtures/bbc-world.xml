@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>BBC World</title>
+    <link>https://www.bbc.com/news/world</link>
+    <description>BBC World</description>
+    <lastBuildDate>Thu, 15 Oct 2026 12:00:00 GMT</lastBuildDate>
+    <item>
+      <title><![CDATA[Markets rally as inflation cools]]></title>
+      <link>https://www.bbc.com/news/articles/markets-rally</link>
+      <description><![CDATA[Global stocks rose sharply on Thursday as inflation data came in cooler than expected.]]></description>
+      <pubDate>Thu, 15 Oct 2026 11:30:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.bbc.com/news/articles/markets-rally</guid>
+      <media:thumbnail url="https://ichef.bbci.co.uk/news/800/cpsprod/markets.jpg" width="800" height="450" />
+    </item>
+    <item>
+      <title>Tech shares slide amid chip warning</title>
+      <link>https://www.bbc.com/news/articles/tech-shares</link>
+      <description>Chipmakers led losses across European technology stocks.</description>
+      <pubDate>Thu, 15 Oct 2026 11:00:00 GMT</pubDate>
+      <enclosure url="https://ichef.bbci.co.uk/news/624/cpsprod/tech.mp3" type="audio/mpeg" length="2048000" />
+    </item>
+    <item>
+      <title>Bank holds rates steady</title>
+      <link>https://www.bbc.com/news/articles/bank-rates?utm_source=rss&amp;utm_medium=feed</link>
+      <description>The central bank voted to keep borrowing costs unchanged for a third month.</description>
+      <pubDate>Thu, 15 Oct 2026 10:30:00 GMT</pubDate>
+      <enclosure url="https://ichef.bbci.co.uk/news/1200/cpsprod/bank.jpg" type="image/jpeg" length="153600" />
+    </item>
+    <item>
+      <title><![CDATA[Markets rally as inflation cools (updated)]]></title>
+      <link>https://www.bbc.com/news/articles/markets-rally</link>
+      <description><![CDATA[Global stocks rose sharply on Thursday as inflation data came in cooler than expected. Follow our live coverage for the latest updates throughout the day.]]></description>
+      <pubDate>Thu, 15 Oct 2026 12:15:00 GMT</pubDate>
+      <media:thumbnail url="https://ichef.bbci.co.uk/news/800/cpsprod/markets.jpg" width="800" height="450" />
+    </item>
+    <item>
+      <title>Week on Wall Street delivers a bumpy ride</title>
+      <link>https://www.bbc.com/news/articles/week-wall-street</link>
+      <description>The week on Wall Street delivered a bumpy ride for investors, with swings in both directions as traders weighed corporate earnings against shifting expectations for central bank policy. Markets closed mixed on Friday after a late-afternoon slip in technology shares erased earlier gains. Economists surveyed by the central bank say the outlook remains broadly stable, though they warned that persistent price pressures in the housing sector could complicate decisions in the coming months. Analysts now expect the next rate decision to be a close call, with futures markets pricing in a roughly even split between a cut and a hold.</description>
+      <pubDate>Thu, 15 Oct 2026 09:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Probe lands on asteroid</title>
+      <link>https://www.bbc.com/news/articles/probe-lands</link>
+      <description>Engineers confirmed a successful touchdown on the asteroid&apos;s surface.</description>
+      <pubDate>Thu, 15 Oct 2026 09:00:00 GMT</pubDate>
+      <media:thumbnail url="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" />
+    </item>
+    <item>
+      <title>Festival opens in capital</title>
+      <link>https://www.bbc.com/news/articles/festival-opens</link>
+      <description>The annual arts festival opened with a parade through the city centre.</description>
+      <pubDate>Thu, 15 Oct 2026 08:30:00 GMT</pubDate>
+      <media:thumbnail url="/images/cpsprod/festival.jpg" width="400" height="300" />
+    </item>
+  </channel>
+</rss>

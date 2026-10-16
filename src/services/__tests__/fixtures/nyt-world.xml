@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>New York Times World</title>
+    <link>https://www.nytimes.com/section/world</link>
+    <description>NYT World</description>
+    <lastBuildDate>Wed, 14 Oct 2026 19:00:00 GMT</lastBuildDate>
+    <item>
+      <title>UN reaches climate accord</title>
+      <link>https://www.nytimes.com/2026/10/14/climate/accord.html</link>
+      <description>Delegates agreed to a binding framework after two weeks of talks.</description>
+      <content:encoded><![CDATA[<p>Delegates from 194 countries agreed on Friday to a binding framework that commits signatories to steeper emissions cuts through the end of the decade.</p><p>The final text was adopted by consensus shortly after midnight.</p>]]></content:encoded>
+      <pubDate>Wed, 14 Oct 2026 18:00:00 GMT</pubDate>
+      <guid isPermaLink="false">https://www.nytimes.com/2026/10/14/climate/accord.html</guid>
+      <media:content url="https://static01.nyt.com/images/2026/10/14/climate/800.jpg" width="800" height="533" />
+      <media:thumbnail url="https://static01.nyt.com/images/2026/10/14/climate/200.jpg" width="200" height="133" />
+    </item>
+    <item>
+      <title>City transit strike ends</title>
+      <description>Union leaders said workers would return on Monday after a tentative pay deal.</description>
+      <pubDate>Wed, 14 Oct 2026 17:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://www.nytimes.com/2026/10/14/transit-strike.html</guid>
+    </item>
+    <item>
+      <title>Q3 earnings beat expectations</title>
+      <link>https://www.nytimes.com/2026/10/14/earnings-beat.html?utm_campaign=rss</link>
+      <description>Revenue topped forecasts across most divisions.</description>
+      <pubDate>Wed, 14 Oct 2026 16:00:00 GMT</pubDate>
+      <guid isPermaLink="true">https://guid.example.net/permalink/12345</guid>
+    </item>
+  </channel>
+</rss>

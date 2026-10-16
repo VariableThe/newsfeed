@@ -1,0 +1,76 @@
+import { vi } from 'vitest';
+import type { NewsArticle } from '../../types';
+import type { NotificationPermission } from '../../services/notifications';
+
+export function makeArticle(overrides: Partial<NewsArticle> = {}): NewsArticle {
+    return {
+        id: 'n-test1',
+        headline: 'Test headline about world events',
+        summary: 'A short summary of the test story for rendering checks.',
+        fullStory: 'The full story body goes here with more detail than the summary.',
+        hasFullContent: false,
+        tags: ['World'],
+        source: 'BBC World',
+        sourceId: 'bbc-world',
+        sourceUrl: 'https://www.bbc.com/news/world-test',
+        timestamp: '2026-10-16T10:00:00.000Z',
+        imageUrl: undefined,
+        importance: 'normal',
+        ...overrides,
+    };
+}
+
+export function createStore(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+    return {
+        articles: [],
+        filtered: [],
+        deck: [],
+        saved: [],
+        feeds: {},
+        feedHealth: [],
+        trendingIds: new Set<string>(),
+        readIds: new Set<string>(),
+        isLoading: false,
+        isRefreshing: false,
+        isEmpty: false,
+        lastUpdated: null,
+        error: null,
+        filters: { topics: [], sources: [], unreadOnly: false },
+        query: '',
+        view: { kind: 'deck' },
+        theme: 'system',
+        resolvedTheme: 'light',
+        notificationsPermission: 'default',
+        notificationsEnabled: false,
+        quietHoursStart: null,
+        quietHoursEnd: null,
+        topics: ['Tech', 'World'],
+        sources: ['bbc-world', 'nyt-technology'],
+        refresh: vi.fn(),
+        refreshFeed: vi.fn(),
+        openDeck: vi.fn(),
+        openFeed: vi.fn(),
+        openSaved: vi.fn(),
+        openArticle: vi.fn(),
+        closeArticle: vi.fn(),
+        saveArticle: vi.fn(),
+        unsaveArticle: vi.fn(),
+        toggleSaved: vi.fn(),
+        markRead: vi.fn(),
+        markAllRead: vi.fn(),
+        setQuery: vi.fn(),
+        setTopics: vi.fn(),
+        toggleTopic: vi.fn(),
+        setSources: vi.fn(),
+        toggleSource: vi.fn(),
+        clearFilters: vi.fn(),
+        setTheme: vi.fn(),
+        enableNotifications: vi.fn(
+            async (): Promise<NotificationPermission> => 'granted',
+        ),
+        disableNotifications: vi.fn(),
+        setQuietHours: vi.fn(),
+        resetReadingState: vi.fn(),
+        ...overrides,
+    };
+}
