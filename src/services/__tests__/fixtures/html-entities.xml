@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Entity Test Feed</title>
+    <link>https://example.com/</link>
+    <description>Fixture for HTML entity decoding</description>
+    <lastBuildDate>Thu, 15 Oct 2026 10:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Tom &amp; Jerry&#39;s &quot;Big&quot; Day &lt;review&gt; &#169; 2026</title>
+      <link>https://example.com/entities</link>
+      <description>5 &gt; 3 &amp; 2 &lt; 4 and &quot;quotes&quot; plus &#39;apostrophes&#39;.</description>
+      <pubDate>Thu, 15 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

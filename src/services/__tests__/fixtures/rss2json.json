@@ -1,0 +1,47 @@
+{
+  "status": "ok",
+  "feed": {
+    "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "title": "BBC World",
+    "link": "https://www.bbc.com/news/world"
+  },
+  "items": [
+    {
+      "title": "Markets rally as inflation cools",
+      "pubDate": "2026-10-15 11:30:00",
+      "link": "https://www.bbc.com/news/articles/markets-rally",
+      "permalink": "https://www.bbc.com/news/articles/markets-rally",
+      "author": "BBC News",
+      "thumbnail": "https://ichef.bbci.co.uk/news/800/cpsprod/markets.jpg",
+      "description": "<p>Global stocks rose sharply on Thursday.</p>",
+      "content": "<p>Global stocks rose sharply on Thursday as inflation data came in cooler than expected across major economies.</p>",
+      "enclosure": {
+        "link": "https://ichef.bbci.co.uk/news/1200/cpsprod/markets-full.jpg",
+        "type": "image/jpeg"
+      },
+      "categories": ["Business"]
+    },
+    {
+      "title": "Bank holds rates steady",
+      "pubDate": "2026-10-15 10:00:00",
+      "link": "https://www.bbc.com/news/articles/bank-rates",
+      "thumbnail": "",
+      "enclosure": {
+        "link": "https://ichef.bbci.co.uk/news/900/cpsprod/bank.jpg",
+        "type": "image/jpeg"
+      }
+    },
+    {
+      "title": "Festival opens in capital",
+      "pubDate": "2026-10-15 09:00:00",
+      "link": "https://www.bbc.com/news/articles/festival-opens",
+      "thumbnail": "/images/festival.jpg",
+      "enclosure": null
+    },
+    {
+      "title": "Probe lands on asteroid",
+      "pubDate": "2026-10-15 08:00:00",
+      "link": "https://www.bbc.com/news/articles/probe-lands"
+    }
+  ]
+}

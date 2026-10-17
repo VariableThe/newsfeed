@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>No Dates Feed</title>
+    <link>https://example.com/</link>
+    <description>Items without publication dates</description>
+    <lastBuildDate>Fri, 16 Oct 2026 06:00:00 GMT</lastBuildDate>
+    <item>
+      <title>First undated item</title>
+      <link>https://example.com/first</link>
+      <description>An item with no pubDate at all.</description>
+    </item>
+    <item>
+      <title>Second undated item</title>
+      <link>https://example.com/second</link>
+      <description>Also missing every other date field.</description>
+    </item>
+  </channel>
+</rss>

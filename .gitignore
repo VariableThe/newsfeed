@@ -11,6 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+.vercel
+coverage/
+
+# Test artifacts (Playwright traces, reports)
+test-results/
 
 # Editor directories and files
 .vscode/*

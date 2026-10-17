@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+  <title>Example Atom Feed</title>
+  <link href="https://example.org/" rel="self" />
+  <updated>2026-10-15T10:00:00Z</updated>
+  <id>urn:example:feed</id>
+  <entry>
+    <title>Atom Entry One</title>
+    <link rel="alternate" href="https://example.org/entries/one" />
+    <id>urn:example:entry:one</id>
+    <published>2026-10-15T09:00:00Z</published>
+    <updated>2026-10-15T09:30:00Z</updated>
+    <summary>First entry summary.</summary>
+    <content>Full first entry body with plain text content.</content>
+    <media:thumbnail url="https://example.org/img/one.jpg" width="200" height="150" />
+  </entry>
+  <entry>
+    <title>Atom Entry Two</title>
+    <link rel="alternate" href="https://example.org/entries/two" />
+    <id>urn:example:entry:two</id>
+    <updated>2026-10-15T08:00:00Z</updated>
+    <content>Second entry body with plain text content.</content>
+  </entry>
+  <entry>
+    <title>Atom Entry Three</title>
+    <link rel="alternate" href="https://example.org/entries/three" />
+    <id>urn:example:entry:three</id>
+    <summary>Third entry has a summary but no content and no dates.</summary>
+  </entry>
+</feed>
