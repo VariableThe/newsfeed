@@ -1,5 +1,6 @@
 import type { NewsArticle } from '../types';
 import type { Filters, ThemePreference } from './newsReducer';
+import { isSafeHttpUrl } from '../lib/normalize';
 
 export const SCHEMA_VERSION = 2;
 
@@ -66,6 +67,13 @@ function isArticleArray(value: unknown): value is NewsArticle[] {
     );
 }
 
+function sanitizeSavedArticles(articles: NewsArticle[]): NewsArticle[] {
+    return articles.map((article) => ({
+        ...article,
+        sourceUrl: isSafeHttpUrl(article.sourceUrl) ? article.sourceUrl.trim() : '',
+    }));
+}
+
 function isQuietHoursBound(value: unknown): value is string | null {
     return value === null || (typeof value === 'string' && HHMM.test(value));
 }
@@ -89,7 +97,7 @@ function validatePersisted(value: unknown): PersistedState | null {
 
     return {
         version: SCHEMA_VERSION,
-        saved: value.saved,
+        saved: sanitizeSavedArticles(value.saved),
         readIds: value.readIds,
         seenIds: value.seenIds,
         filters: {

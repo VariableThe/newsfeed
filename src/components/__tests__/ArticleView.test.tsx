@@ -72,6 +72,24 @@ describe('ArticleView', () => {
         expect(screen.getByText('Link copied to clipboard')).toBeInTheDocument();
     });
 
+    it('does not render or share a legacy unsafe source URL', async () => {
+        const unsafe = makeArticle({ id: 'n-unsafe', sourceUrl: 'javascript:alert(1)' });
+        state.store = createStore({ articles: [unsafe], saved: [] });
+        const user = userEvent.setup();
+        const writeText = vi.fn();
+        Object.defineProperty(navigator, 'clipboard', {
+            value: { writeText },
+            configurable: true,
+        });
+
+        render(<ArticleView id="n-unsafe" onClose={() => undefined} />);
+        expect(screen.queryByRole('link')).not.toBeInTheDocument();
+        expect(screen.getByText('The original link is unavailable.')).toBeInTheDocument();
+        await user.click(screen.getByRole('button', { name: 'Share story' }));
+        expect(writeText).not.toHaveBeenCalled();
+        expect(screen.getByText('Link unavailable')).toBeInTheDocument();
+    });
+
     it('renders an honest missing-story state for unknown ids', () => {
         state.store = createStore({ articles: [], saved: [] });
         render(<ArticleView id="n-missing" onClose={() => undefined} />);
