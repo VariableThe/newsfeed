@@ -27,6 +27,13 @@ describe('dedupeArticles', () => {
         expect(result).toHaveLength(1);
     });
 
+    it('does not collapse unrelated articles with invalid URLs', () => {
+        const first = makeArticle({ id: 'invalid-1', headline: 'First story', sourceUrl: 'javascript:alert(1)' });
+        const second = makeArticle({ id: 'invalid-2', headline: 'Second story', sourceUrl: 'not a URL' });
+        const result = dedupeArticles([first, second]);
+        expect(result.map((article) => article.id)).toEqual(['invalid-1', 'invalid-2']);
+    });
+
     it('keeps the newest article when URLs collide', () => {
         const older = makeArticle({ id: 'a-older', timestamp: '2026-10-16T09:00:00Z', sourceUrl: 'https://example.com/story' });
         const newer = makeArticle({ id: 'z-newer', timestamp: '2026-10-16T11:00:00Z', sourceUrl: 'https://example.com/story?utm_source=x' });

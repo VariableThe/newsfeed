@@ -31,6 +31,18 @@ describe('normalizeUrl', () => {
         expect(normalizeUrl('https://example.com/foo/')).toBe('https://example.com/foo');
         expect(normalizeUrl('https://example.com')).toBe('https://example.com/');
     });
+
+    it('rejects blank, malformed, and unsupported URLs', () => {
+        expect(normalizeUrl('   ')).toBe('');
+        expect(normalizeUrl('not a URL')).toBe('');
+        expect(normalizeUrl('javascript:alert(1)')).toBe('');
+        expect(normalizeUrl('data:text/html,<p>hello</p>')).toBe('');
+        expect(normalizeUrl(' JaVaScRiPt:alert(1) ')).toBe('');
+    });
+
+    it('preserves ordinary HTTP(S) query and hash canonicalization', () => {
+        expect(normalizeUrl('HTTP://Example.com/story?b=2&a=1#section')).toBe('https://example.com/story?a=1&b=2');
+    });
 });
 
 describe('normalizeTitle', () => {

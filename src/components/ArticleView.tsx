@@ -4,6 +4,7 @@ import { Bookmark, BookmarkCheck, ExternalLink, Share2, X } from 'lucide-react';
 import { useNews } from '../state/newsStore';
 import { formatDateTime, formatRelativeTime } from '../lib/format';
 import { hostFromUrl } from '../lib/format';
+import { isSafeHttpUrl } from '../lib/normalize';
 import { EmptyState } from './Common/EmptyState';
 import { IconButton } from './Common/IconButton';
 
@@ -86,13 +87,18 @@ export function ArticleView({ id, onClose }: ArticleViewProps): ReactElement {
     }
 
     const sourceHost = hostFromUrl(article.sourceUrl);
+    const safeSourceUrl = isSafeHttpUrl(article.sourceUrl) ? article.sourceUrl.trim() : '';
 
     const share = async (): Promise<void> => {
         setShareMessage('');
+        if (safeSourceUrl === '') {
+            setShareMessage('Link unavailable');
+            return;
+        }
         const shareData = {
             title: article.headline,
             text: article.summary,
-            url: article.sourceUrl,
+            url: safeSourceUrl,
         };
         const nav = navigator as Navigator & { share?: (data: ShareData) => Promise<void> };
         if (typeof nav.share === 'function') {
@@ -104,7 +110,7 @@ export function ArticleView({ id, onClose }: ArticleViewProps): ReactElement {
             return;
         }
         try {
-            await navigator.clipboard.writeText(article.sourceUrl);
+            await navigator.clipboard.writeText(safeSourceUrl);
             setShareMessage('Link copied to clipboard');
         } catch {
             setShareMessage('Could not copy the link on this device');
@@ -167,17 +173,23 @@ export function ArticleView({ id, onClose }: ArticleViewProps): ReactElement {
                         {article.fullStory}
                     </p>
 
-                    <a
-                        href={article.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-[var(--color-accent)] px-5 font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-                    >
-                        <ExternalLink size={17} aria-hidden="true" />
-                        {article.hasFullContent
-                            ? 'Open original'
-                            : `Read the full article at ${sourceHost === '' ? article.source : sourceHost}`}
-                    </a>
+                    {safeSourceUrl !== '' ? (
+                        <a
+                            href={safeSourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-[var(--color-accent)] px-5 font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+                        >
+                            <ExternalLink size={17} aria-hidden="true" />
+                            {article.hasFullContent
+                                ? 'Open original'
+                                : `Read the full article at ${sourceHost === '' ? article.source : sourceHost}`}
+                        </a>
+                    ) : (
+                        <p role="note" className="mt-5 text-sm text-[var(--color-secondary-text)]">
+                            The original link is unavailable.
+                        </p>
+                    )}
 
                     <div aria-live="polite" className="mt-2 min-h-5 text-sm text-[var(--color-secondary-text)]">
                         {shareMessage}

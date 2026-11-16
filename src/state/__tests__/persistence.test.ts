@@ -78,6 +78,19 @@ describe('persistence', () => {
         expect(loaded.quietHoursEnd).toBe('07:00');
     });
 
+    it('keeps saved articles while making legacy unsafe links non-navigable', () => {
+        const payload = {
+            ...defaultPersisted(),
+            saved: [{ ...article(1), sourceUrl: 'javascript:alert(1)' }],
+        };
+        localStorage.setItem('newsfeed_state_v2', JSON.stringify(payload));
+
+        const loaded = loadPersisted();
+        expect(loaded.saved).toHaveLength(1);
+        expect(loaded.saved[0].headline).toBe('Headline 1');
+        expect(loaded.saved[0].sourceUrl).toBe('');
+    });
+
     it('returns defaults when the key is missing', () => {
         expect(loadPersisted()).toEqual(defaultPersisted());
     });

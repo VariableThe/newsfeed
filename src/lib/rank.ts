@@ -19,7 +19,11 @@ function pickWinner(group: NewsArticle[]): NewsArticle {
 export function dedupeArticles(articles: NewsArticle[]): NewsArticle[] {
     const byUrl = new Map<string, NewsArticle[]>();
     for (const article of articles) {
-        const key = normalizeUrl(article.sourceUrl);
+        const normalizedUrl = normalizeUrl(article.sourceUrl);
+        // Invalid or missing URLs cannot identify two stories as duplicates.
+        // Keep each article's stable id as a private grouping key so title
+        // deduplication still gets a chance to handle genuine duplicates.
+        const key = normalizedUrl === '' ? `\u0000${article.id}` : normalizedUrl;
         const group = byUrl.get(key);
         if (group) {
             group.push(article);

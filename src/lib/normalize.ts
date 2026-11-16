@@ -11,13 +11,30 @@ const TRACKING_PARAMS = new Set([
     'ref_src',
 ]);
 
+export function isSafeHttpUrl(url: string): boolean {
+    const trimmed = url.trim();
+    if (trimmed === '') return false;
+
+    try {
+        const parsed = new URL(trimmed);
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
 export function normalizeUrl(url: string): string {
+    const trimmed = url.trim();
+    if (trimmed === '') return '';
+
     let parsed: URL;
     try {
-        parsed = new URL(url);
+        parsed = new URL(trimmed);
     } catch {
-        return url.trim();
+        return '';
     }
+
+    if (!isSafeHttpUrl(trimmed)) return '';
 
     parsed.protocol = 'https:';
     parsed.hostname = parsed.hostname.toLowerCase().replace(/^www\./, '');
